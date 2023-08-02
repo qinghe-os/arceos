@@ -1,4 +1,5 @@
 # Arguments
+MODEL ?= uni	# kernel type. uni: unikernel, mono: monolithic kernel.
 ARCH ?= x86_64
 SMP ?= 1
 MODE ?= release
@@ -127,8 +128,11 @@ unittest_no_fail_fast:
 disk_img:
 ifneq ($(wildcard $(DISK_IMG)),)
 	@printf "$(YELLOW_C)warning$(END_C): disk image \"$(DISK_IMG)\" already exists!\n"
-else
+endif
+ifeq ($(MODEL), uni)
 	$(call make_disk_image,fat32,$(DISK_IMG))
+else ifeq ($(MODEL), mono)
+	$(call make_disk_image,ext2,$(DISK_IMG))
 endif
 
 clean: clean_c

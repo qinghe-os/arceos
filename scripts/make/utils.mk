@@ -18,6 +18,28 @@ define make_disk_image_fat32
   @mkfs.fat -F 32 $(1)
 endef
 
+define make_disk_image_ext2
+  @printf "    $(GREEN_C)Creating$(END_C) ext2 disk image \"$(1)\" ...\n"
+  @dd if=/dev/zero of=$(1) bs=1M count=4096  
+  @sudo mkfs.ext2 -I 128 $(1)
+  @rm -rf disk_image
+  @mkdir disk_image
+  @sudo mount $(1) disk_image
+  @sudo cp -r -v system-root/. disk_image/
+  @cd disk_image
+  @sudo mkdir -p dev
+  @sudo mkdir -p home
+  @sudo mkdir -p tmp
+  @sudo mkdir -p proc
+  @sudo mkdir -p var
+  @sudo mkdir -p mount
+  @cd ..
+  @sync
+  @sudo umount disk_image/
+  @rm -rf disk_image
+endef
+
 define make_disk_image
   $(if $(filter $(1),fat32), $(call make_disk_image_fat32,$(2)))
+  $(if $(filter $(1),ext2), $(call make_disk_image_ext2,$(2)))
 endef
