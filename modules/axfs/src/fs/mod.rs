@@ -6,6 +6,8 @@ cfg_if::cfg_if! {
     }
 }
 
+pub mod ext2;
+
 #[cfg(feature = "devfs")]
 pub use axfs_devfs as devfs;
 

@@ -13,10 +13,11 @@ documentation = "https://rcore-os.github.io/arceos/axfs/index.html"
 devfs = ["dep:axfs_devfs"]
 ramfs = ["dep:axfs_ramfs"]
 fatfs = ["dep:fatfs"]
+ext2 = ["dep:ext2"]
 myfs = ["dep:crate_interface"]
 use-ramdisk = []
 
-default = ["devfs", "ramfs", "fatfs"]
+default = ["devfs", "ramfs", "fatfs", "ext2"]
 
 [dependencies]
 log = "0.4"
@@ -44,6 +45,9 @@ features = [ # no std
     "log_level_trace",
     "unicode",
 ]
+
+[dependencies.ext2]
+git = "https://github.com/qinghe-os/ext2-rs.git"
 
 [dev-dependencies]
 axdriver = { path = "../axdriver", features = ["block", "ramdisk"] }
