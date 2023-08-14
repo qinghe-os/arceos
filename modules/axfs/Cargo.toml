@@ -48,6 +48,7 @@ features = [ # no std
 
 [dependencies.ext2]
 git = "https://github.com/qinghe-os/ext2-rs.git"
+optional = true
 
 [dev-dependencies]
 axdriver = { path = "../axdriver", features = ["block", "ramdisk"] }

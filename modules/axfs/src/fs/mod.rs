@@ -3,10 +3,10 @@ cfg_if::cfg_if! {
         pub mod myfs;
     } else if #[cfg(feature = "fatfs")] {
         pub mod fatfs;
+    } else if #[cfg(feature = "ext2")] {
+        pub mod ext2;
     }
 }
-
-pub mod ext2;
 
 #[cfg(feature = "devfs")]
 pub use axfs_devfs as devfs;
