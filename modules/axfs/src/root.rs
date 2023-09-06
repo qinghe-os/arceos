@@ -143,7 +143,7 @@ pub(crate) fn init_rootfs(disk: crate::dev::Disk) {
             FAT_FS.init();
             let main_fs = FAT_FS.clone();
         } else if #[cfg(feature = "ext2")] {
-            static EXT2_FS = LazyInit::new();
+            static EXT2_FS: LazyInit<Arc<fs::ext2::Ext2FileSystem>> = LazyInit::new();
             EXT2_FS.init_by(Arc::new(fs::ext2::Ext2FileSystem::new(disk)));
             EXT2_FS.init();
             let main_fs = EXT2_FS.clone();
