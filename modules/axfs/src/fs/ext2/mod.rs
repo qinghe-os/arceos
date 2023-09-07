@@ -1,13 +1,17 @@
-use core::cell::UnsafeCell;
-use axfs_vfs::VfsNodeRef;
+mod superblock;
+mod block_group;
 
-use ext2::Ext2;
+use alloc::boxed::Box;
+use alloc::sync::Arc;
 
+use superblock::Superblock;
+use block_group::BlockGroupDescriptor;
 use crate::dev::Disk;
 
 pub struct Ext2FileSystem {
-    inner: ext2::Ext2<>,
-    root_dir: UnsafeCell<Option<VfsNodeRef>>,
+    superblock: Box<Superblock>,
+    bgdt: Box<BlockGroupDescriptor>,
+    dev: Arc<Disk>,
 }
 
 impl Ext2FileSystem {
