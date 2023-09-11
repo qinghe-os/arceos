@@ -28,3 +28,9 @@ pub struct BlockGroupDescriptor {
     #[doc(hidden)]
     _reserved: [u8; 14],
 }
+
+impl BlockGroupDescriptor {
+    pub fn new() -> Option<Self> {
+        unimplemented!()
+    }
+}

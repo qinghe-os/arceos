@@ -21,8 +21,21 @@ impl Ext2FileSystem {
     }
 
     #[cfg(not(feature = "use-ramdisk"))]
-    pub fn new(disk: Disk) -> Self {
-        unimplemented!();
+    pub fn new(disk: Disk) -> Option<Ext2FileSystem> {
+        let mut superblock = [0 as u8; 1024];
+        disk.set_position(1024);
+        disk.read_one(&mut superblock);
+        let superblock = unsafe {superblock as Superblock};
+        if superblock.magic != Superblock::MAGIC {
+            return None;
+        }
+
+
+        Some(Self {
+            superblock,
+            bgdt: BlockGroupDescriptor::new(),
+            dev: disk,
+        })
     }
 
     pub fn init(&'static self) {
