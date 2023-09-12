@@ -25,7 +25,8 @@ impl Ext2FileSystem {
         let mut superblock = [0 as u8; 1024];
         disk.set_position(1024);
         disk.read_one(&mut superblock);
-        let superblock = unsafe {superblock as Superblock};
+        let superblock = Superblock::new_from_buf(&mut superblock);
+        let superblock = Box::new(superblock);
         if superblock.magic != Superblock::MAGIC {
             return None;
         }
@@ -34,7 +35,7 @@ impl Ext2FileSystem {
         Some(Self {
             superblock,
             bgdt: BlockGroupDescriptor::new(),
-            dev: disk,
+            dev: Arc::new(disk),
         })
     }
 
