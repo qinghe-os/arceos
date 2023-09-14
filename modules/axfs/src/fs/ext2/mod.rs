@@ -4,14 +4,15 @@ mod block_group;
 use alloc::boxed::Box;
 use alloc::sync::Arc;
 
+use axfs_vfs::{VfsOps, VfsNodeRef};
 use superblock::Superblock;
-use block_group::BlockGroupDescriptor;
+// use block_group::BlockGroupDescriptor;
 use crate::dev::Disk;
 
 pub struct Ext2FileSystem {
-    superblock: Box<Superblock>,
-    bgdt: Box<BlockGroupDescriptor>,
-    dev: Arc<Disk>,
+    pub superblock: Box<Superblock>,
+    // bgdt: Box<BlockGroupDescriptor>,
+    pub dev: Arc<Disk>,
 }
 
 impl Ext2FileSystem {
@@ -21,7 +22,7 @@ impl Ext2FileSystem {
     }
 
     #[cfg(not(feature = "use-ramdisk"))]
-    pub fn new(disk: Disk) -> Option<Ext2FileSystem> {
+    pub fn new(mut disk: Disk) -> Option<Ext2FileSystem> {
         let mut superblock = [0 as u8; 1024];
         disk.set_position(1024);
         disk.read_one(&mut superblock);
@@ -34,12 +35,18 @@ impl Ext2FileSystem {
 
         Some(Self {
             superblock,
-            bgdt: BlockGroupDescriptor::new(),
+            // bgdt: Box::new(BlockGroupDescriptor::new()),
             dev: Arc::new(disk),
         })
     }
 
     pub fn init(&'static self) {
+        unimplemented!();
+    }
+}
+
+impl VfsOps for Ext2FileSystem {
+    fn root_dir(&self) -> VfsNodeRef {
         unimplemented!();
     }
 }

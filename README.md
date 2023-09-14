@@ -20,4 +20,9 @@
 make MODEL=mono disk_img	# 创建ext2镜像：disk.img。里面是用户态所需的文件。
 	# 注：前提要求是这些文件先要放在arceos顶层的system-root目录。在aero操作系统里执行`./aero.py --sysroot`可以得到system-root目录。
 ```
+## ext2文件系统支持
 
+```sh
+make A=apps/fs/shell FS=y LOG=debug
+make A=apps/fs/shell FS=y LOG=debug justrun
+```
